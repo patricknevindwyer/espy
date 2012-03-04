@@ -9,6 +9,7 @@ Create a file called _Reqfile_ in the root of your project, and annotate what li
 	
 	# Make sure we have MongoDB and Drivers
 	py pymongo > 2.1.0
+	rb mongo > 1.5
 	cmd mongod >= 2.0.0
 
 Run _espy_, and see if your corner of the world is sane:
@@ -17,9 +18,10 @@ Run _espy_, and see if your corner of the world is sane:
 	Python >= 2.7 ... ok
 	pip >= 1.0 ... ok
 	pymongo >= 2.1.0 ... ok
+	mongo > 1.5 ... ok
 	mongod >= 2.0.0 ... ok
 	====================
-	Vefiried 4 of 4.
+	Vefiried 5 of 5.
 	++ Environment Passed
 
 So long as the library or external command loosely comply with [Semantic Versioning](http://semver.org/), _espy_ will do it's best to parse the version, and compare. And real life means more than one language in a development stack, so _espy_ is extentable to include new version checkers as life gets in the way.
@@ -28,6 +30,7 @@ Espy currently supports:
 
   * Python Version
   * Python Libraries
+  * Ruby Gem Libraries
   * External Commands
 
 ## Install
@@ -57,6 +60,14 @@ Most Python Modules have a property called (with some variation in capitalizatio
 In this case, _espy_ will check the _MyVer_ property of the _foobaz_ module.
 
 The Python Library checker supports a semantic version of either _2 or 3_ digits.
+
+## Ruby Gem Libraries
+
+Quick and easy Gem check:
+
+	gem mygem > 2.0
+
+_espy_ will check against all of the installed versions that Gem can find. Semantic versions of either _2 or 3_ digits are supported.
 
 ## External Commands
 
