@@ -1,0 +1,156 @@
+#!/usr/bin/python
+import sys
+from optparse import OptionParser
+import os.path
+import espy
+
+def loadCheckers(opts):
+    """
+    Load a map of check prefix to Checkers from Espy
+    """
+    checkers = {}
+    
+    for module in dir(espy):
+        
+        if "check" in module.lower():
+            check_mod = __import__("espy.%s" % (module), globals(), locals(), ["%ser" % (module)], -1)
+            mod_inst = getattr(check_mod, "%ser" % (module))(opts)
+            checkers[mod_inst.prefix()] = mod_inst
+    return checkers
+            
+        
+def options():
+    opts = OptionParser()
+    
+    opts.add_option("-a", "--all", dest="check_all", default=False, action="store_true", help="Check all options, despite failures")
+    opts.add_option("-f", "--file", dest="pylib_file", default=".", action="store", help="Pylib file to read for project requirements")
+    opts.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true", help="Print verbose results")
+    (opt, args) = opts.parse_args()
+    
+    return (opt, args)
+    
+
+
+def pyfile_check(opts, checkers):
+    """
+    Read a Pyfile requirements file to check the operating environment for this
+    project. The Pyfile defines basic requirements for the project to run:
+        
+      * Python libraries
+      * Exernal Commands
+      * Environment variables (not yet used)
+      * Node.js libraries (not yet used)
+      * External libraries (not yet used)
+     
+    The Pyfile syntax relies upon adherence to the SemVer versioning standard,
+    but is fairly flexible for version inspection. The following syntax is
+    supported:
+    
+    ## Python libraries
+      
+        pylib <library name>[optional inspection variable] "SEMVER"
+        
+    So, for instance, to require version 2.0.0 or greater of the Python
+    MongoDB library, you could write:
+    
+        pylib pymongo >= 2.0.0
+    
+    By default the _VERSION_ property of a library is inspected for a version
+    number. If this property isn't available, you can include the optional
+    property name in the version declaration. For instance, if the _foobiz_
+    library stored it's version number in _LibVersion_, you could write:
+    
+        pylib foobiz[LibVersion] >= 1.2.0
+        
+    ## External Commands
+    
+        ext "<command>"[switch] regex "SEMVER"
+    
+    External libraries can be a bit more difficult to inspect, as they more
+    often than not require a command line flag, and the output of this flag
+    is not consistent between commands. In this case, a regex is specified
+    in the config file to pick up the external library.
+    
+    # TODO: Have prebuilt regex for popular libraries.
+    
+    For instance, to check the version of MongoDB installed, you could use
+    the line:
+    
+        ext "/usr/local/bin/mongod" [--version] >= 2.0.0
+    
+    Or, if you think the built in default capture expression will suffice (the
+    built uses a simple set of flags to test for versions), you could write:
+    
+        ext mongod >= 2.0.0
+    
+    # TODO: Built in regex for SEMVER capture
+    
+    ## Python Version
+        
+        python <comp> "SEMVER"
+    
+    Test if a specific version of Python is installed
+    """
+    
+    # see if we have a file
+    pyfile_name = opts.pylib_file
+    pyfile_verified = None
+    
+    if os.path.isfile(pyfile_name):
+        pyfile_verified = pyfile_name
+    elif os.path.isfile(os.path.join(pyfile_name, "Pyfile")):
+        pyfile_verified = os.path.join(pyfile_name, "Pyfile")
+    
+    if pyfile_verified is None:
+        print "Couldn't find a Pyfile"
+        return
+    
+    if opts.verbose:
+        print "Using Pyfile [%s]" % (pyfile_verified)
+    
+    pyfile = open(pyfile_verified, 'r')
+    
+    if opts.verbose:
+        print "Defined Checkers:"
+        for prefix in checkers.keys():
+            print "\t%s" % (prefix)
+    checked = 0
+    passed = 0
+    
+    for line in pyfile:
+        
+        # skip comments
+        if line.strip().startswith("#"):
+            continue
+            
+        # skip blank lines
+        if len(line.strip()) == 0:
+            continue
+        
+        # determine what kind of line we're looking at
+        prefix = line.strip().split(' ')[0]
+        if prefix in checkers:
+            checked += 1
+            if checkers[prefix].check(line.strip()):
+                passed += 1
+            else:
+                if not opts.check_all:
+                    break
+        else:
+            print "Found a prefix that doesn't correspond to a known Checker [%s]" % (prefix)
+    
+    # print some results
+    print "=" * 20
+    print "Vefiried %s of %s." % (passed, checked)
+    if passed == checked:
+        print "++ Environment Passed"
+    else:
+        print "-- Environment Failed"
+
+
+if __name__ == "__main__":
+    
+    (opts, args) = options()
+    
+    checkers = loadCheckers(opts)
+    pyfile_check(opts, checkers)

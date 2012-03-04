@@ -1,0 +1,25 @@
+# Boiler plate checks
+python >= 2.7
+ext pip >= 1.0
+
+# Check for our Python modules
+#
+# Examples:
+#
+# Check for a library version
+#	pylib pymongo >= 2.1.0
+#
+# Check a library with a specific version attribute
+#	pylib foobaz[VERNUM] >= 0.9.1
+pylib pymongo >= 2.1.0
+
+# Check for external commands
+# 
+# Examples:
+#
+# Check for command at a specific path:
+#	ext /usr/sfw/bin/gcc >= 4.1.1
+#
+# Check for a command using a specific flag:
+#	ext mongod [--version] > 2.0.0
+ext mongod >= 2.0.0
