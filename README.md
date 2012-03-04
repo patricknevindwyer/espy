@@ -32,6 +32,7 @@ Espy currently supports:
 
 ## Install
 
+	pip install espy
 
 ## Python Version
 
