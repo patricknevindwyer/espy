@@ -8,7 +8,7 @@ import re
 class PythonLibraryChecker (EspyBase):
         
     def prefix(self):
-        return "pylib"
+        return "py"
     
     def check(self, req_line):
         """
@@ -21,7 +21,7 @@ class PythonLibraryChecker (EspyBase):
     
             pylib pymongo[VERSION] >= 2.0.0
         """
-        pylib_re = r'pylib\s+(\w+)(\[\w+\])?\s+(.+)\s*(\d+\.\d+\.\d)'
+        pylib_re = r'py\s+(\w+)(\[\w+\])?\s+(\S+)\s*((\d+\.\d+)(\.\d+)?)'
         pylib_match = re.compile(pylib_re).match
     
         req = pylib_match(req_line)

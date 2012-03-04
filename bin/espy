@@ -33,8 +33,8 @@ def options():
 
 def pyfile_check(opts, checkers):
     """
-    Read a Pyfile requirements file to check the operating environment for this
-    project. The Pyfile defines basic requirements for the project to run:
+    Read a Reqfile requirements file to check the operating environment for this
+    project. The Reqfile defines basic requirements for the project to run:
         
       * Python libraries
       * Exernal Commands
@@ -42,7 +42,7 @@ def pyfile_check(opts, checkers):
       * Node.js libraries (not yet used)
       * External libraries (not yet used)
      
-    The Pyfile syntax relies upon adherence to the SemVer versioning standard,
+    The Reqfile syntax relies upon adherence to the SemVer versioning standard,
     but is fairly flexible for version inspection. The following syntax is
     supported:
     
@@ -98,15 +98,15 @@ def pyfile_check(opts, checkers):
     
     if os.path.isfile(pyfile_name):
         pyfile_verified = pyfile_name
-    elif os.path.isfile(os.path.join(pyfile_name, "Pyfile")):
-        pyfile_verified = os.path.join(pyfile_name, "Pyfile")
+    elif os.path.isfile(os.path.join(pyfile_name, "Reqfile")):
+        pyfile_verified = os.path.join(pyfile_name, "Reqfile")
     
     if pyfile_verified is None:
-        print "Couldn't find a Pyfile"
+        print "Couldn't find a Reqfile"
         return
     
     if opts.verbose:
-        print "Using Pyfile [%s]" % (pyfile_verified)
+        print "Using Reqfile [%s]" % (pyfile_verified)
     
     pyfile = open(pyfile_verified, 'r')
     

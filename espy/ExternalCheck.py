@@ -7,7 +7,7 @@ import re
 class ExternalChecker (EspyBase):
     
     def prefix(self):
-        return "ext"
+        return "cmd"
     
     def check(self, req_line):
         """
@@ -21,7 +21,7 @@ class ExternalChecker (EspyBase):
             ext mongodb [--version] >= 2.0.0
         """
     
-        extlib_re = r'ext\s+([^\s\[\]]+)\s*(\[\S+\])?\s+(\S+)\s*((\d+\.\d+)(\.\d+)?)'
+        extlib_re = r'cmd\s+([^\s\[\]]+)\s*(\[\S+\])?\s+(\S+)\s*((\d+\.\d+)(\.\d+)?)'
         extlib_match = re.compile(extlib_re).match
     
         req = extlib_match(req_line)
