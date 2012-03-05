@@ -2,7 +2,7 @@
 
 Create a file called _Reqfile_ in the root of your project, and annotate what libraries and external commands your project requires:
 
-
+```python
     # boiler plate checks
 	python > 2.7
 	cmd pip >= 1.0
@@ -12,6 +12,7 @@ Create a file called _Reqfile_ in the root of your project, and annotate what li
 	rb mongo > 1.5
 	npm mongoose > 2.5
 	cmd mongod >= 2.0.0
+```
 
 Run _espy_, and see if your corner of the world is sane:
 
