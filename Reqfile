@@ -24,8 +24,13 @@ py espy >= 0.1.0
 # Check for a command using a specific flag:
 #	ext mongod [--version] > 2.0.0
 cmd mongod >= 2.0.0
+cmd perl >= 5.7.1
 
 # Check a few ruby gems
 gem actionpack > 2.2.0
 gem mysql > 2.8
 npm mongoose > 2.5
+
+# Check for some perl modules
+pl CGI > 3.4
+pl Date::Calc >= 6.0

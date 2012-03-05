@@ -4,7 +4,7 @@ setup(
     name = "espy",
     packages = ["espy"],
     scripts = ['bin/espy'],
-    version = "0.3.0",
+    version = "0.4.0",
     description = "Operating Environment Inspection",
     author = "Patrick Nevin Dwyer",
     author_email = "patricknevindwyer@gmail.com",

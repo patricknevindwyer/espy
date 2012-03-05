@@ -4,4 +4,5 @@ import PythonLibraryCheck
 import ExternalCheck
 import GemCheck
 import NpmCheck
-VERSION = "0.3.0"
+import PerlModuleCheck
+VERSION = "0.4.0"

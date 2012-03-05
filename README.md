@@ -3,15 +3,27 @@
 Create a file called _Reqfile_ in the root of your project, and annotate what libraries and external commands your project requires:
 
 ```python
-    # boiler plate checks
-	python > 2.7
+	# Boiler plate checks
+	python >= 2.7
 	cmd pip >= 1.0
-	
-	# Make sure we have MongoDB and Drivers
-	py pymongo > 2.1.0
-	rb mongo > 1.5
-	npm mongoose > 2.5
+
+	# Check for our Python modules
+	py pymongo >= 2.1
+	py espy >= 0.1.0
+
+	# Check for external commands
 	cmd mongod >= 2.0.0
+	cmd perl >= 5.7.1
+
+	# Check a few ruby gems
+	gem actionpack > 2.2.0
+	gem mysql > 2.8
+	npm mongoose > 2.5
+
+	# Check for some perl modules
+	pl CGI > 3.4
+	pl Date::Calc >= 6.0
+
 ```
 
 Run _espy_, and see if your corner of the world is sane:
@@ -19,22 +31,28 @@ Run _espy_, and see if your corner of the world is sane:
 ```bash
     > espy
 	
-	External Commands checks
-	------------------------
+	External Command checks
+	-----------------------
 	pip >= 1.0 ... ok
 	mongod >= 2.0.0 ... ok
+	perl >= 5.7.1 ... ok
 
-	Ruby Gems checks
-	----------------
+	Ruby Gem checks
+	---------------
 	actionpack > 2.2.0 ... ok
 	mysql > 2.8 ... ok
 
-	Node.js Modules checks
-	----------------------
+	Node.js Module checks
+	---------------------
 	mongoose > 2.5 ... ok
 
-	Python Modules checks
-	---------------------
+	Perl Module checks
+	------------------
+	CGI > 3.4 ... ok
+	Date::Calc >= 6.0 ... ok
+
+	Python Module checks
+	--------------------
 	pymongo >= 2.1 ... ok
 	espy >= 0.1.0 ... ok
 
@@ -43,7 +61,7 @@ Run _espy_, and see if your corner of the world is sane:
 	Python >= 2.7 ... ok
 
 	====================
-	Vefiried 8 of 8.
+	Vefiried 11 of 11.
 	++ Environment Passed
 ```
 
@@ -55,6 +73,7 @@ Espy currently supports:
   * Python Libraries
   * Ruby Libraries (via Gem)
   * Node.js Libraries (via NPM)
+  * Perl Modules
   * External Commands
 
 ## Install
@@ -100,6 +119,14 @@ Check installed Node.js libraries via NPM:
 	npm myJs > 2.1.2
 
 _espy_ will check against the local and global NPM module installation. Semantic versions with either _2 or 3_ digits are supported.
+
+## Perl Modules
+
+Check installed Perl modules that conform to CPAN Versioning:
+
+	pl CGI > 3.0
+
+_espy_ will check against the active perl installation available in the current user path. Semantic versions with either _2 or 3_ digits are supported, although most Perl modules only use the first two digits in versioning.
 
 ## External Commands
 
