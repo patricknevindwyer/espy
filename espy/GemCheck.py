@@ -10,7 +10,7 @@ class GemChecker (EspyBase):
         return "gem"
     
     def __str__(self):
-        return "Ruby Gems"
+        return "Ruby Gem"
         
     def check(self, req_line):
         """

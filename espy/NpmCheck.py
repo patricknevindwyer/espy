@@ -10,7 +10,7 @@ class NpmChecker (EspyBase):
         return "npm"
     
     def __str__(self):
-        return "Node.js Modules"
+        return "Node.js Module"
         
     def check(self, req_line):
         """

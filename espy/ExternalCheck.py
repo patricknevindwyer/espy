@@ -10,7 +10,7 @@ class ExternalChecker (EspyBase):
         return "cmd"
     
     def __str__(self):
-        return "External Commands"
+        return "External Command"
         
     def check(self, req_line):
         """

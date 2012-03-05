@@ -11,7 +11,7 @@ class PythonLibraryChecker (EspyBase):
         return "py"
     
     def __str__(self):
-        return "Python Modules"
+        return "Python Module"
         
     def check(self, req_line):
         """
