@@ -1,0 +1,9 @@
+# boiler plate checks
+python > 2.7
+cmd pip >= 1.0
+
+# Make sure we have MongoDB and Drivers
+py pymongo > 2.1.0
+rb mongo > 1.5
+npm mongoose > 2.5
+cmd mongod >= 2.0.0

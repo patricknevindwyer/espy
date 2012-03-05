@@ -18,14 +18,32 @@ Run _espy_, and see if your corner of the world is sane:
 
 ```bash
     > espy
-	Python >= 2.7 ... ok
+	
+	External Commands checks
+	------------------------
 	pip >= 1.0 ... ok
-	pymongo >= 2.1.0 ... ok
-	mongo > 1.5 ... ok
-	mongoose > 2.5 ... ok
 	mongod >= 2.0.0 ... ok
+
+	Ruby Gems checks
+	----------------
+	actionpack > 2.2.0 ... ok
+	mysql > 2.8 ... ok
+
+	Node.js Modules checks
+	----------------------
+	mongoose > 2.5 ... ok
+
+	Python Modules checks
+	---------------------
+	pymongo >= 2.1 ... ok
+	espy >= 0.1.0 ... ok
+
+	CPython Runtime checks
+	----------------------
+	Python >= 2.7 ... ok
+
 	====================
-	Vefiried 6 of 6.
+	Vefiried 8 of 8.
 	++ Environment Passed
 ```
 
