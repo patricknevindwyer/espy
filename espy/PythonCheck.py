@@ -9,6 +9,9 @@ class PythonChecker (espy.EspyBase.EspyBase):
     def prefix(self):
         return "python"
     
+    def __str__(self):
+        return "CPython Runtime"
+        
     def check(self, req_line):
         """
         Test for a specific version of Python. This is a simple version of the

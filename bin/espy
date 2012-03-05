@@ -23,7 +23,7 @@ def options():
     opts = OptionParser()
     
     opts.add_option("-a", "--all", dest="check_all", default=False, action="store_true", help="Check all options, despite failures")
-    opts.add_option("-f", "--file", dest="pylib_file", default=".", action="store", help="Pylib file to read for project requirements")
+    opts.add_option("-f", "--file", dest="reqlib_file", default=".", action="store", help="Pylib file to read for project requirements")
     opts.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true", help="Print verbose results")
     (opt, args) = opts.parse_args()
     
@@ -31,7 +31,7 @@ def options():
     
 
 
-def pyfile_check(opts, checkers):
+def reqfile_check(opts, checkers):
     """
     Read a Reqfile requirements file to check the operating environment for this
     project. The Reqfile defines basic requirements for the project to run:
@@ -48,19 +48,19 @@ def pyfile_check(opts, checkers):
     
     ## Python libraries
       
-        pylib <library name>[optional inspection variable] "SEMVER"
+        reqlib <library name>[optional inspection variable] "SEMVER"
         
     So, for instance, to require version 2.0.0 or greater of the Python
     MongoDB library, you could write:
     
-        pylib pymongo >= 2.0.0
+        reqlib pymongo >= 2.0.0
     
     By default the _VERSION_ property of a library is inspected for a version
     number. If this property isn't available, you can include the optional
     property name in the version declaration. For instance, if the _foobiz_
     library stored it's version number in _LibVersion_, you could write:
     
-        pylib foobiz[LibVersion] >= 1.2.0
+        reqlib foobiz[LibVersion] >= 1.2.0
         
     ## External Commands
     
@@ -93,22 +93,22 @@ def pyfile_check(opts, checkers):
     """
     
     # see if we have a file
-    pyfile_name = opts.pylib_file
-    pyfile_verified = None
+    reqfile_name = opts.reqlib_file
+    reqfile_verified = None
     
-    if os.path.isfile(pyfile_name):
-        pyfile_verified = pyfile_name
-    elif os.path.isfile(os.path.join(pyfile_name, "Reqfile")):
-        pyfile_verified = os.path.join(pyfile_name, "Reqfile")
+    if os.path.isfile(reqfile_name):
+        reqfile_verified = reqfile_name
+    elif os.path.isfile(os.path.join(reqfile_name, "Reqfile")):
+        reqfile_verified = os.path.join(reqfile_name, "Reqfile")
     
-    if pyfile_verified is None:
+    if reqfile_verified is None:
         print "Couldn't find a Reqfile"
         return
     
     if opts.verbose:
-        print "Using Reqfile [%s]" % (pyfile_verified)
+        print "Using Reqfile [%s]" % (reqfile_verified)
     
-    pyfile = open(pyfile_verified, 'r')
+    reqfile = open(reqfile_verified, 'r')
     
     if opts.verbose:
         print "Defined Checkers:"
@@ -117,7 +117,9 @@ def pyfile_check(opts, checkers):
     checked = 0
     passed = 0
     
-    for line in pyfile:
+    check_groups = {}
+    
+    for line in reqfile:
         
         # skip comments
         if line.strip().startswith("#"):
@@ -130,15 +132,37 @@ def pyfile_check(opts, checkers):
         # determine what kind of line we're looking at
         prefix = line.strip().split(' ')[0]
         if prefix in checkers:
+            if prefix not in check_groups:
+                check_groups[prefix] = []
+            check_groups[prefix].append(line.strip())
+        else:
+            print "Found a prefix that doesn't correspond to a known Checker [%s]" % (prefix)
+            if not opts.check_all:
+                sys.exit(1)
+    
+    # now walk through the groups
+    prefixes = check_groups.keys()
+    prefixes.sort()
+    
+    print ""
+    
+    for prefix in prefixes:
+        
+        checks = check_groups[prefix]
+        
+        hdrStr = "%s checks" % (checkers[prefix])
+        print hdrStr
+        print "-" * len(hdrStr)
+        
+        for check in checks:
             checked += 1
-            if checkers[prefix].check(line.strip()):
+            if checkers[prefix].check(check):
                 passed += 1
             else:
                 if not opts.check_all:
                     break
-        else:
-            print "Found a prefix that doesn't correspond to a known Checker [%s]" % (prefix)
-    
+        print ""
+        
     # print some results
     print "=" * 20
     print "Vefiried %s of %s." % (passed, checked)
@@ -153,4 +177,4 @@ if __name__ == "__main__":
     (opts, args) = options()
     
     checkers = loadCheckers(opts)
-    pyfile_check(opts, checkers)
+    reqfile_check(opts, checkers)

@@ -9,6 +9,9 @@ class NpmChecker (EspyBase):
     def prefix(self):
         return "npm"
     
+    def __str__(self):
+        return "Node.js Modules"
+        
     def check(self, req_line):
         """
         Try and check for a Node Library, with the following:

@@ -9,6 +9,9 @@ class ExternalChecker (EspyBase):
     def prefix(self):
         return "cmd"
     
+    def __str__(self):
+        return "External Commands"
+        
     def check(self, req_line):
         """
         Try and check an external command version, with the request line of the

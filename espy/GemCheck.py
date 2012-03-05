@@ -9,6 +9,9 @@ class GemChecker (EspyBase):
     def prefix(self):
         return "gem"
     
+    def __str__(self):
+        return "Ruby Gems"
+        
     def check(self, req_line):
         """
         Try and check for a Ruby Gem, with the following:

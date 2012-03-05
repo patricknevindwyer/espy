@@ -10,6 +10,9 @@ class PythonLibraryChecker (EspyBase):
     def prefix(self):
         return "py"
     
+    def __str__(self):
+        return "Python Modules"
+        
     def check(self, req_line):
         """
         Try and check a python library version, with the request line of the
