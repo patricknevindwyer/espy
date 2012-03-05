@@ -16,6 +16,7 @@ Create a file called _Reqfile_ in the root of your project, and annotate what li
 
 Run _espy_, and see if your corner of the world is sane:
 
+```bash
     > espy
 	Python >= 2.7 ... ok
 	pip >= 1.0 ... ok
@@ -26,6 +27,7 @@ Run _espy_, and see if your corner of the world is sane:
 	====================
 	Vefiried 6 of 6.
 	++ Environment Passed
+```
 
 So long as the library or external command loosely comply with [Semantic Versioning](http://semver.org/), _espy_ will do it's best to parse the version, and compare. And real life means more than one language in a development stack, so _espy_ is extentable to include new version checkers as life gets in the way.
 
