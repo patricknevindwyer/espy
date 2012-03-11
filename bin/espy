@@ -4,6 +4,10 @@ from optparse import OptionParser
 import os.path
 import espy
 
+# Version 2 support
+from espy.syntax.v2 import EspySyntaxParser
+from espy.processor.v2 import EspyEngine
+
 def loadCheckers(opts):
     """
     Load a map of check prefix to Checkers from Espy
@@ -25,6 +29,7 @@ def options():
     opts.add_option("-a", "--all", dest="check_all", default=False, action="store_true", help="Check all options, despite failures")
     opts.add_option("-f", "--file", dest="reqlib_file", default=".", action="store", help="Pylib file to read for project requirements")
     opts.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true", help="Print verbose results")
+    opts.add_option("--reqfile_version_2", dest="reqfile_version", default=1, action="store_const", const=2)
     (opt, args) = opts.parse_args()
     
     return (opt, args)
@@ -171,10 +176,52 @@ def reqfile_check(opts, checkers):
     else:
         print "-- Environment Failed"
 
+def v2_check(opts):
+
+    # Bootstrap the syntax parser
+    syntax = EspySyntaxParser()
+    
+    # load the extended modules
+    
+    # Pull in the extended syntax from modules
+    syntax.includeSyntaxFrom([])
+    
+    # see if we have a file
+    reqfile_name = opts.reqlib_file
+    reqfile_verified = None
+    
+    if os.path.isfile(reqfile_name):
+        reqfile_verified = reqfile_name
+    elif os.path.isfile(os.path.join(reqfile_name, "Reqfile")):
+        reqfile_verified = os.path.join(reqfile_name, "Reqfile")
+    
+    if reqfile_verified is None:
+        print "Couldn't find a Reqfile"
+        return
+    
+    if opts.verbose:
+        print "Using Reqfile [%s]" % (reqfile_verified)
+    
+    # Build the AST
+    ast = syntax.parseReqfile(reqfile_verified)
+    
+    # Run the AST through the processor engine
+    engine = EspyEngine()
+    engine.includeModules([])
+    engine.run()
+    
 
 if __name__ == "__main__":
     
     (opts, args) = options()
     
-    checkers = loadCheckers(opts)
-    reqfile_check(opts, checkers)
+    if opts.reqfile_version == 1:
+        checkers = loadCheckers(opts)
+        reqfile_check(opts, checkers)
+    else:
+        print "Warning -- Reqfile Version 2 is experimental, at best"
+        
+        v2_check(opts)
+
+        
+        

@@ -1,0 +1,29 @@
+# Reqfile version 2.0
+section Bootstrap
+python exists
+ruby exists
+ruby gem exists
+
+section Python Modules
+with python
+	pymongo exists
+	espy > 0.4.0
+end
+
+section Ruby Modules
+with ruby
+	actionpack exists
+	mysql > 2.8
+end
+
+section Directory Layout
+with filesystem
+	directory bin exists
+	directory espy/syntax exists
+end
+
+section Mongo Setup
+with mongo using config: db/mongo.yml, environment: dev
+    can connect
+    has collection prefs, posts in db users
+end
