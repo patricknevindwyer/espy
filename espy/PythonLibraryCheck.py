@@ -33,12 +33,13 @@ class PythonLibraryChecker (EspyBase):
             print "The requirement line couldn't be parsed:\n\t%s" % (req_line)
     
         req_lib = req.groups()[0]
-        req_prop = req.groups()[1]
+        req_prop = req.groups()[1].strip('[]')
         req_comp = req.groups()[2].strip()
         req_ver = req.groups()[3]
     
         if self.options.verbose:
             print ":: Trying requirement\n\t", req.groups()
+            print "\tprop::", req_prop
         # track things
         req_found = False
         req_msg = None

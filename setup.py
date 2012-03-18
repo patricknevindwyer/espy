@@ -2,9 +2,9 @@
 from distutils.core import setup
 setup(
     name = "espy",
-    packages = ["espy"],
+    packages = ["espy", "espy.processor", "espy.syntax"],
     scripts = ['bin/espy'],
-    version = "0.4.0",
+    version = "0.4.1",
     description = "Operating Environment Inspection",
     author = "Patrick Nevin Dwyer",
     author_email = "patricknevindwyer@gmail.com",

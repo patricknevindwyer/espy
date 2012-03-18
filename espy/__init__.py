@@ -5,4 +5,4 @@ import ExternalCheck
 import GemCheck
 import NpmCheck
 import PerlModuleCheck
-VERSION = "0.4.0"
+VERSION = "0.4.1"
